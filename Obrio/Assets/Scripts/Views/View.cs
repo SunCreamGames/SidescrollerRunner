@@ -2,17 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class View : MonoBehaviour
+namespace Views
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    using Zenject;
 
-    // Update is called once per frame
-    void Update()
+    public class View : MonoBehaviour, IInitializable
     {
-        
+        // Start is called before the first frame update
+        void Start()
+        {
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+        }
+
+        public virtual void Initialize()
+        {
+        }
     }
 }
