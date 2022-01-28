@@ -6,6 +6,7 @@ Assets/Plugins/Editor/JetBrains*
 
 
 ### Unity ###
+[Ll]ogs/
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
@@ -43,3 +44,6 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+#Logs
+*.log
