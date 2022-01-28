@@ -2,35 +2,34 @@ namespace Views
 {
     using System;
     using UnityEngine;
+    using Zenject;
+    using Logic;
+    using Signals;
 
     public class PlayerView : View
     {
         [SerializeField]
         private Rigidbody2D rb;
 
-        private bool _canJump;
+        private SignalBus _signalBus;
 
-        public override void Initialize()
+
+        [Inject]
+        public void Init(SignalBus signalBus)
         {
+            _signalBus = signalBus;
+                _signalBus.Subscribe<PlayerJump>(Jump);
         }
 
-        public void TryJump()
-        {
-            if (_canJump)
-            {
-                Jump();
-            }
-        }
 
         private void Jump()
         {
             rb.AddForce(Vector2.up, ForceMode2D.Impulse);
-            _canJump = false;
         }
 
         private void OnLand()
         {
-            _canJump = true;
+            _signalBus.Fire<PlayerLanded>();
         }
 
         private void OnCollisionEnter(Collision other)
@@ -38,7 +37,6 @@ namespace Views
             var coin = other.collider.GetComponent<CoinView>();
             if (coin != null)
             {
-                
             }
         }
     }

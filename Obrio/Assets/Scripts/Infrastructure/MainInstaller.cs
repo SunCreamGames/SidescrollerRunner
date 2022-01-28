@@ -1,5 +1,4 @@
 using Signals;
-using UnityEngine;
 using Zenject;
 
 public class MainInstaller : MonoInstaller
@@ -17,5 +16,8 @@ public class MainInstaller : MonoInstaller
         Container.DeclareSignal<PickUpCoin>();
         Container.DeclareSignal<LevelFailing>();
         Container.DeclareSignal<LevelStarting>();
+        Container.DeclareSignal<PlayerJump>();
+        Container.DeclareSignal<PlayerTryJump>();
+        Container.DeclareSignal<PlayerLanded>();
     }
 }

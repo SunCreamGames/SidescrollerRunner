@@ -17,4 +17,16 @@ namespace Signals
     public class LevelFailing
     {
     }
+
+    public class PlayerTryJump
+    {
+    }
+
+    public class PlayerJump
+    {
+    }
+
+    public class PlayerLanded
+    {
+    }
 }
