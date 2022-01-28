@@ -19,5 +19,6 @@ public class MainInstaller : MonoInstaller
         Container.DeclareSignal<PlayerJump>();
         Container.DeclareSignal<PlayerTryJump>();
         Container.DeclareSignal<PlayerLanded>();
+        Container.DeclareSignal<UpdateScore>();
     }
 }

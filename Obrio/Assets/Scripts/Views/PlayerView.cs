@@ -18,7 +18,7 @@ namespace Views
         public void Init(SignalBus signalBus)
         {
             _signalBus = signalBus;
-                _signalBus.Subscribe<PlayerJump>(Jump);
+            _signalBus.Subscribe<PlayerJump>(Jump);
         }
 
 
@@ -37,7 +37,18 @@ namespace Views
             var coin = other.collider.GetComponent<CoinView>();
             if (coin != null)
             {
+                _signalBus.Fire<PickUpCoin>();
+                return;
             }
+
+            var obstacle = other.collider.GetComponent<ObstacleView>();
+            if (obstacle != null)
+            {
+                _signalBus.Fire<CollisionWithObstacle>();
+                return;
+            }
+
+            _signalBus.Fire<PlayerLanded>();
         }
     }
 }

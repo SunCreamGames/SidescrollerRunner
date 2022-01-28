@@ -29,4 +29,9 @@ namespace Signals
     public class PlayerLanded
     {
     }
+
+    public class UpdateScore
+    {
+        public int Score { get; set; }
+    }
 }
