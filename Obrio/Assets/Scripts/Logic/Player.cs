@@ -1,8 +1,8 @@
+using Signals;
+using Zenject;
+
 namespace Logic
 {
-    using Signals;
-    using Zenject;
-
     public class Player
     {
         private bool _canJump;
