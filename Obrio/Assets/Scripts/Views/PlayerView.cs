@@ -25,12 +25,16 @@ namespace Views
         private void Jump()
         {
             rb.AddForce(Vector2.up, ForceMode2D.Impulse);
+            PauseAnimation();
         }
+
 
         private void OnLand()
         {
             _signalBus.Fire<PlayerLanded>();
+            UnpauseAnimation();
         }
+
 
         private void OnCollisionEnter(Collision other)
         {
@@ -49,6 +53,14 @@ namespace Views
             }
 
             _signalBus.Fire<PlayerLanded>();
+        }
+
+        private void PauseAnimation()
+        {
+        }
+
+        private void UnpauseAnimation()
+        {
         }
     }
 }

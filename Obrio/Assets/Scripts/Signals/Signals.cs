@@ -30,6 +30,10 @@ namespace Signals
     {
     }
 
+    public class UpdateSpeed
+    {
+    }
+
     public class UpdateScore
     {
         public int Score { get; set; }
