@@ -8,12 +8,15 @@ namespace Logic
         public float Speed { get; private set; }
         public float SpeedPoint { get; private set; }
 
+        private SignalBus _signalBus;
+
         [Inject]
         public GameSpeedController(SignalBus signalBus)
         {
             // TODO : Configs
             Speed = 1f;
             SpeedPoint = 100f;
+            _signalBus = signalBus;
             signalBus.Subscribe<UpdateSpeed>(UpdateSpeed);
         }
 
@@ -21,6 +24,10 @@ namespace Logic
         {
             Speed *= 1.05f;
             SpeedPoint *= 2.3f;
+            _signalBus.Fire(new SpeedUpdated
+            {
+                NewSpeed = Speed
+            });
         }
     }
 }

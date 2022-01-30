@@ -34,6 +34,11 @@ namespace Signals
     {
     }
 
+    public class SpeedUpdated
+    {
+        public float NewSpeed { get; set; }
+    }
+
     public class UpdateScore
     {
         public int Score { get; set; }

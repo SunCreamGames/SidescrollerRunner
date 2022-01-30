@@ -45,6 +45,13 @@ namespace Views
                 return;
             }
 
+            var ground = other.collider.GetComponent<GroundView>();
+            if (ground != null)
+            {
+                _signalBus.Fire<CollisionWithObstacle>();
+                return;
+            }
+
             var obstacle = other.collider.GetComponent<ObstacleView>();
             if (obstacle != null)
             {
