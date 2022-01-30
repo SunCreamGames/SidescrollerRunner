@@ -4,9 +4,7 @@ using UnityEngine;
 
 namespace Views
 {
-    using Zenject;
-
-    public class View : MonoBehaviour, IInitializable
+    public class View : MonoBehaviour
     {
         // Start is called before the first frame update
         void Start()
@@ -15,10 +13,6 @@ namespace Views
 
         // Update is called once per frame
         void Update()
-        {
-        }
-
-        public virtual void Initialize()
         {
         }
     }

@@ -1,6 +1,7 @@
 using Logic;
 using Signals;
 using UnityEngine.PlayerLoop;
+using UnityEngine.Serialization;
 
 namespace Views
 {
@@ -12,7 +13,10 @@ namespace Views
     public class TileView : View
     {
         [SerializeField]
-        private Pools _pools;
+        private List<Transform> _obtacleSlots;
+
+        [SerializeField]
+        private List<Transform> _coinsSlots;
 
         private List<PlatformView> _obstacles;
         private List<CoinView> _coins;
