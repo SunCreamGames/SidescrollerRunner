@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
@@ -10,7 +11,6 @@ namespace Views
         private int _size;
         private View _prefab;
         private Vector3 _poolRoot;
-
         private Queue<View> _objects;
 
         public View GetObject()
@@ -25,7 +25,7 @@ namespace Views
             _objects.Enqueue(o);
         }
 
-        public void Init(View prefab, int size, Vector3 rootPos)
+        public void Init(View prefab, int size, Vector3 rootPos, DiContainer container)
         {
             _prefab = prefab;
             _poolRoot = rootPos;
@@ -35,6 +35,7 @@ namespace Views
             for (int i = 0; i < _size; i++)
             {
                 var a = Instantiate(_prefab);
+                container.InjectGameObject(a.gameObject);
                 a.transform.position = _poolRoot;
                 a.gameObject.SetActive(true);
                 _objects.Enqueue(a);

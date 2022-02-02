@@ -14,7 +14,7 @@ namespace Logic
         public GameSpeedController(SignalBus signalBus)
         {
             // TODO : Configs
-            Speed = 1f;
+            Speed = 20f;
             SpeedPoint = 100f;
             _signalBus = signalBus;
             signalBus.Subscribe<UpdateSpeed>(UpdateSpeed);

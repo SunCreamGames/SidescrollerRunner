@@ -1,43 +1,58 @@
+using System;
+using System.Collections.Generic;
+
 namespace Logic.Generating
 {
-    using System;
-    using System.Collections.Generic;
-
     public class RandomLevelCreator : ILevelCreator
     {
         public Tile CreateTile()
         {
             Tile tile = new Tile
             {
-                ObstaclesCoordinates = new List<(float X, float Y)>(),
-                CoinsCoordinates = new List<(float X, float Y)>(),
-                HasGround = true
+                HasGround = true,
+                Obstacles = new List<bool>(),
+                Coins = new List<bool>()
             };
 
             var r = new Random();
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 6; i++)
             {
-                for (int j = 0; j < 5; j++)
+                var x = r.Next(0, 10);
+                tile.Obstacles.Add(x < 3);
+                if (tile.Obstacles.Contains(true))
                 {
-                    int a;
-                    if (i % 2 == 0 && j % 2 == 0)
-                    {
-                        a = r.Next(0, 2);
-                        if (a == 1)
-                        {
-                            tile.ObstaclesCoordinates.Add((-6f + j * 13.5f, 4f - 2.5f * i));
-                        }
-                    }
-
-                    else if (i == 2 || i % 2 != 0 && j % 2 != 0)
-                    {
-                        a = r.Next(0, 2);
-                        if (a == 1)
-                        {
-                            tile.CoinsCoordinates.Add((-6f + j * 13.5f, 4f - 2.5f * i));
-                        }
-                    }
+                    break;
                 }
+            }
+
+            for (int i = 0; i < 8; i++)
+            {
+                var x = r.Next(0, 10);
+                tile.Coins.Add(x < 4);
+            }
+
+            return tile;
+        }
+
+        public Tile CreateEmptyTile()
+        {
+            Tile tile = new Tile
+            {
+                HasGround = true,
+                Obstacles = new List<bool>(),
+                Coins = new List<bool>()
+            };
+
+            var r = new Random();
+            for (int i = 0; i < 6; i++)
+            {
+                tile.Obstacles.Add(false);
+            }
+
+            for (int i = 0; i < 8; i++)
+            {
+                var x = r.Next(0, 10);
+                tile.Coins.Add(false);
             }
 
             return tile;

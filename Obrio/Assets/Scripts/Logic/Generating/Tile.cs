@@ -5,7 +5,7 @@ namespace Logic.Generating
     public class Tile
     {
         public bool HasGround { get; set; }
-        public List<(float X, float Y)> ObstaclesCoordinates { get; set; }
-        public List<(float X, float Y)> CoinsCoordinates { get; set; }
+        public List<bool> Obstacles { get; set; }
+        public List<bool> Coins { get; set; }
     }
 }

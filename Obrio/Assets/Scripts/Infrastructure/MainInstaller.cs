@@ -1,3 +1,5 @@
+using Logic;
+using Logic.Generating;
 using Signals;
 using Zenject;
 
@@ -6,8 +8,11 @@ public class MainInstaller : MonoInstaller
     public override void InstallBindings()
     {
         SignalBusInstaller.Install(Container);
-
+        // Container.Bind<SignalBus>().AsSingle();
         DeclareSignals();
+
+        Container.Bind<ILevelCreator>().To<RandomLevelCreator>().AsSingle();
+        Container.Bind<IGameSpeedController>().To<GameSpeedController>().AsSingle();
     }
 
     private void DeclareSignals()
@@ -22,5 +27,6 @@ public class MainInstaller : MonoInstaller
         Container.DeclareSignal<UpdateScore>();
         Container.DeclareSignal<UpdateSpeed>();
         Container.DeclareSignal<SpeedUpdated>();
+        Container.DeclareSignal<SpawnTile>();
     }
 }

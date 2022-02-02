@@ -1,3 +1,4 @@
+using Views;
 using Zenject;
 
 namespace Signals
@@ -42,5 +43,10 @@ namespace Signals
     public class UpdateScore
     {
         public int Score { get; set; }
+    }
+
+    public class SpawnTile
+    {
+        public TileView LastTile { get; set; }
     }
 }
