@@ -64,6 +64,21 @@ namespace Views
             _coins = new List<CoinView>();
 
             SignalBus.Subscribe<SpeedUpdated>(s => UpdateSpeed(s.NewSpeed));
+            SignalBus.Subscribe<PickUpCoin>(OnPickedUpCoin);
+        }
+
+        private void OnPickedUpCoin(PickUpCoin signal)
+        {
+            if (!_coins.Contains(signal.Coin))
+            {
+                return;
+            }
+
+            Debug.Log($"<color=red> Coin picked up : {signal.Coin.transform.position.x} </color>");
+
+            _coins.Remove(signal.Coin);
+            signal.Coin.transform.SetParent(null);
+            _poolBundle.ReturnObject("Coin", signal.Coin);
         }
 
 
@@ -105,7 +120,6 @@ namespace Views
             SignalBus.Subscribe<StartMoving>(StartMove);
             SignalBus.Subscribe<LevelRestarting>(Decompose);
 
-            Debug.Log($"<color=cyan> Compose </color>");
             _poolBundle = poolBundle;
             _isLastTileOnMap = true;
             _coins = new List<CoinView>();
@@ -140,8 +154,6 @@ namespace Views
 
         private void Decompose()
         {
-            Debug.Log($"<color=red> Decompose </color>");
-            Debug.Log($"Decomposing tile with {transform.position} ");
             rb.velocity = Vector2.zero;
             foreach (var coin in _coins)
             {
