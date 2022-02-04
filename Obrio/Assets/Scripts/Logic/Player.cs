@@ -17,6 +17,10 @@ namespace Logic
 
             _signalBus.Subscribe<PlayerTryJump>(TryJump);
             _signalBus.Subscribe<PlayerLanded>(OnLand);
+            _signalBus.Subscribe<LevelStarted>(() => 
+                { _canJump = true; }
+                );
+            _signalBus.Subscribe<LevelFailing>(() => { _canJump = false; });
         }
 
         private void OnLand()

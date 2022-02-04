@@ -5,22 +5,27 @@ using Zenject;
 
 namespace Views
 {
-    public class PoolBundle : View
+    public class PoolBundle : MonoBehaviour
     {
         private Dictionary<string, Pool> _pools;
-
-        [Inject]
         private DiContainer _container;
 
 
         [SerializeField]
-        private List<View> _poolingPrefabs;
+        private List<GameObject> _poolingPrefabs;
 
         [SerializeField]
         private List<int> _sizes;
 
         [SerializeField]
         private Pool _poolPrefab;
+
+        [Inject]
+        public void Init(DiContainer container)
+        {
+            _container = container;
+        }
+
 
         private void Awake()
         {
@@ -38,12 +43,12 @@ namespace Views
             }
         }
 
-        public View GetObject(string tag)
+        public GameObject GetObject(string tag)
         {
             return _pools[tag].GetObject();
         }
 
-        public void ReturnObject(string tag, View gameObject)
+        public void ReturnObject(string tag, GameObject gameObject)
         {
             _pools[tag].Return(gameObject);
         }

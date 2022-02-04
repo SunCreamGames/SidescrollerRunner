@@ -13,7 +13,7 @@ namespace Logic
         {
             _signalBus = signalBus;
             _signalBus.Subscribe<LevelStarting>(ResetScore);
-            _signalBus.Subscribe<PickUpCoin>(() => AddScore(10));
+            _signalBus.Subscribe<PickUpCoin>(() => AddScore(1));
 
             ResetScore();
         }

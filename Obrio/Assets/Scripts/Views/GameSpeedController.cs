@@ -5,7 +5,7 @@ namespace Views
     using UnityEngine;
     using Zenject;
 
-    public class GameSpeedControllerView : View
+    public class GameSpeedController : MonoBehaviour
     {
         private SignalBus _signalBus;
         private IGameSpeedController _gameSpeedController;

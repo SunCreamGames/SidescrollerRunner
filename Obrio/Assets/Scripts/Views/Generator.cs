@@ -5,7 +5,7 @@ using Zenject;
 
 namespace Views
 {
-    public class Generator : View
+    public class Generator : MonoBehaviour
     {
         [SerializeField]
         private PoolBundle _pools;

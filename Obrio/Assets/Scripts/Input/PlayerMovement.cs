@@ -21,7 +21,7 @@ namespace Input
         private void Awake()
         {
             _isPlaying = false;
-            SignalBus.Subscribe<LevelStarting>(() => _isPlaying = true);
+            SignalBus.Subscribe<LevelStarted>(() => _isPlaying = true);
             SignalBus.Subscribe<LevelFailing>(() => { _isPlaying = false; });
         }
 

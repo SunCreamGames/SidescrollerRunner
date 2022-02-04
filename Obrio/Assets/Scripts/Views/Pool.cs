@@ -5,33 +5,33 @@ using Zenject;
 
 namespace Views
 {
-    public class Pool : View
+    public class Pool : MonoBehaviour
 
     {
         private int _size;
-        private View _prefab;
+        private GameObject _prefab;
         private Vector3 _poolRoot;
-        private Queue<View> _objects;
+        private Queue<GameObject> _objects;
 
-        public View GetObject()
+        public GameObject GetObject()
         {
             var res = _objects.Dequeue();
             return res;
         }
 
-        public void Return(View o)
+        public void Return(GameObject o)
         {
             o.transform.position = _poolRoot;
             _objects.Enqueue(o);
         }
 
-        public void Init(View prefab, int size, Vector3 rootPos, DiContainer container)
+        public void Init(GameObject prefab, int size, Vector3 rootPos, DiContainer container)
         {
             _prefab = prefab;
             _poolRoot = rootPos;
             _size = size;
 
-            _objects = new Queue<View>();
+            _objects = new Queue<GameObject>();
             for (int i = 0; i < _size; i++)
             {
                 var a = Instantiate(_prefab);

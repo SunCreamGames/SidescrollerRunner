@@ -13,10 +13,14 @@ namespace Signals
 
     public class PickUpCoin : Signal
     {
-        public CoinView Coin { get; set; }
+        public Coin Coin { get; set; }
     }
 
     public class LevelStarting : Signal
+    {
+    }
+
+    public class LevelStarted : Signal
     {
     }
 

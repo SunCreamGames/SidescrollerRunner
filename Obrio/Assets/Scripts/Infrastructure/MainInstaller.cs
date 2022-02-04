@@ -14,6 +14,7 @@ public class MainInstaller : MonoInstaller
         Container.Bind<Player>().AsSingle();
         Container.Bind<ILevelCreator>().To<RandomLevelCreator>().AsSingle();
         Container.Bind<IGameSpeedController>().To<GameSpeedController>().AsSingle();
+        Container.Bind<IScoreCounter>().To<ScoreCounter>().AsSingle();
     }
 
 
@@ -24,6 +25,7 @@ public class MainInstaller : MonoInstaller
         Container.DeclareSignal<PickUpCoin>();
         Container.DeclareSignal<LevelFailing>();
         Container.DeclareSignal<LevelStarting>();
+        Container.DeclareSignal<LevelStarted>();
         Container.DeclareSignal<LevelRestarting>();
         Container.DeclareSignal<PlayerJump>();
         Container.DeclareSignal<PlayerTryJump>();

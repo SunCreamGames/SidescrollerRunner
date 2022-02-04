@@ -12,7 +12,7 @@ namespace Views
     using UnityEngine;
     using Zenject;
 
-    public class TileView : View
+    public class TileView : MonoBehaviour
     {
         [SerializeField]
         private Rigidbody2D rb;
@@ -38,30 +38,20 @@ namespace Views
         [SerializeField]
         private PoolBundle _poolBundle;
 
-        private List<PlatformView> _obstacles;
-        private List<CoinView> _coins;
-        private GroundView _ground;
+        private List<Platform> _obstacles;
+        private List<Coin> _coins;
+        private Ground _ground;
 
         private float _speed;
 
-        //
-        // [Inject]
-        // public void Init(SignalBus signalBus, ILevelCreator levelCreator, IGameSpeedController gameSpeedController)
-        // {
-        //     SignalBus = signalBus;
-        //     LevelCreator = levelCreator;
-        //     GameSpeedController = gameSpeedController;
-        //
-        //     Start2();
-        // }
 
         void Start()
         {
             _speed = 0f;
             _isLastTileOnMap = false;
 
-            _obstacles = new List<PlatformView>();
-            _coins = new List<CoinView>();
+            _obstacles = new List<Platform>();
+            _coins = new List<Coin>();
 
             SignalBus.Subscribe<SpeedUpdated>(s => UpdateSpeed(s.NewSpeed));
             SignalBus.Subscribe<PickUpCoin>(OnPickedUpCoin);
@@ -74,11 +64,9 @@ namespace Views
                 return;
             }
 
-            Debug.Log($"<color=red> Coin picked up : {signal.Coin.transform.position.x} </color>");
-
             _coins.Remove(signal.Coin);
             signal.Coin.transform.SetParent(null);
-            _poolBundle.ReturnObject("Coin", signal.Coin);
+            _poolBundle.ReturnObject("Coin", signal.Coin.gameObject);
         }
 
 
@@ -122,8 +110,8 @@ namespace Views
 
             _poolBundle = poolBundle;
             _isLastTileOnMap = true;
-            _coins = new List<CoinView>();
-            _obstacles = new List<PlatformView>();
+            _coins = new List<Coin>();
+            _obstacles = new List<Platform>();
 
             for (int i = 0; i < tile.Coins.Count; i++)
             {
@@ -132,7 +120,7 @@ namespace Views
                     var coin = _poolBundle.GetObject("Coin");
                     coin.transform.SetParent(_coinsSlots[i]);
                     coin.transform.localPosition = Vector3.zero;
-                    _coins.Add((CoinView) coin);
+                    _coins.Add(coin.GetComponent<Coin>());
                 }
             }
 
@@ -144,7 +132,7 @@ namespace Views
                     platform.transform.SetParent(_obtacleSlots[i]);
                     platform.transform.localPosition = Vector3.zero;
 
-                    _obstacles.Add((PlatformView) platform);
+                    _obstacles.Add(platform.GetComponent<Platform>());
                 }
             }
 
@@ -158,16 +146,16 @@ namespace Views
             foreach (var coin in _coins)
             {
                 coin.transform.SetParent(null);
-                _poolBundle.ReturnObject("Coin", coin);
+                _poolBundle.ReturnObject("Coin", coin.gameObject);
             }
 
             foreach (var platform in _obstacles)
             {
                 platform.transform.SetParent(null);
-                _poolBundle.ReturnObject("Platform", platform);
+                _poolBundle.ReturnObject("Platform", platform.gameObject);
             }
 
-            _poolBundle.ReturnObject("Tile", this);
+            _poolBundle.ReturnObject("Tile", gameObject);
             SignalBus.Unsubscribe<StartMoving>(StartMove);
             SignalBus.Unsubscribe<LevelRestarting>(Decompose);
         }

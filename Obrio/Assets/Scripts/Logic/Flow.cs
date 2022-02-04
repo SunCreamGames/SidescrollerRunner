@@ -3,7 +3,7 @@ using UnityEngine;
 using Views;
 using Zenject;
 
-public class Flow : View
+public class Flow : MonoBehaviour
 {
     private SignalBus _signalBus;
 
@@ -16,12 +16,16 @@ public class Flow : View
         _gameState = GameState.GameNotStarted;
         signalBus.Subscribe<CollisionWithObstacle>(OnPlayerDied);
         _signalBus.Subscribe<LevelRestarting>(StartLevel);
+        _signalBus.Subscribe<LevelStarting>(() =>
+        {
+            _gameState = GameState.GameIsPlaying;
+            signalBus.Fire<LevelStarted>();
+        });
     }
 
     private void StartLevel()
     {
         _signalBus.Fire<LevelStarting>();
-        _gameState = GameState.GameIsPlaying;
     }
 
     private void OnPlayerDied()
@@ -38,9 +42,11 @@ public class Flow : View
             if (_gameState == GameState.GameIsOver)
             {
                 _signalBus.Fire<LevelRestarting>();
+                Debug.Log($"<color=red> Here </color>");
             }
             else if (_gameState == GameState.GameNotStarted)
             {
+                Debug.Log($"<color=cyan> Here </color>");
                 _signalBus.Fire<LevelStarting>();
             }
         }
