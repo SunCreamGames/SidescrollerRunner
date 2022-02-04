@@ -14,10 +14,22 @@ namespace Logic
         public GameSpeedController(SignalBus signalBus)
         {
             // TODO : Configs
-            Speed = 20f;
+            Speed = 0f;
             SpeedPoint = 100f;
             _signalBus = signalBus;
             signalBus.Subscribe<UpdateSpeed>(UpdateSpeed);
+
+            signalBus.Subscribe<LevelStarting>(() =>
+            {
+                Speed = 20f;
+                signalBus.Fire<StartMoving>();
+            });
+
+            signalBus.Subscribe<LevelFailing>(() =>
+            {
+                Speed = 0f;
+                signalBus.Fire(new SpeedUpdated {NewSpeed = 0f});
+            });
         }
 
         private void UpdateSpeed()

@@ -23,7 +23,13 @@ namespace Views
 
         void Start()
         {
-            var first = _levelCreator.CreateTile();
+            _signalBus.Subscribe<LevelRestarting>(InitLevel);
+            InitLevel();
+        }
+
+        private void InitLevel()
+        {
+            var first = _levelCreator.CreateEmptyTile();
             var tileView = _pools.GetObject("Tile");
             tileView.transform.position = new Vector3(0, 0f, 0f);
             tileView.GetComponent<TileView>().Compose(first, _pools);
@@ -31,8 +37,6 @@ namespace Views
 
         private void SpawnTile(TileView lastTile)
         {
-            Debug.Log($"<color=cyan> Spawn </color>");
-
             var tile = _levelCreator.CreateTile();
             var tileView = _pools.GetObject("Tile");
             tileView.GetComponent<TileView>().SetIsLastTile(true);

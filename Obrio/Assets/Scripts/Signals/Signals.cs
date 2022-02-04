@@ -3,49 +3,62 @@ using Zenject;
 
 namespace Signals
 {
-    public class CollisionWithObstacle
+    public class Signal
     {
     }
 
-    public class PickUpCoin
+    public class CollisionWithObstacle : Signal
     {
     }
 
-    public class LevelStarting
+    public class PickUpCoin : Signal
+    {
+        public CoinView Coin { get; set; }
+    }
+
+    public class LevelStarting : Signal
     {
     }
 
-    public class LevelFailing
+    public class LevelRestarting : Signal
     {
     }
 
-    public class PlayerTryJump
+    public class LevelFailing : Signal
     {
     }
 
-    public class PlayerJump
+    public class PlayerTryJump : Signal
     {
     }
 
-    public class PlayerLanded
+    public class PlayerJump : Signal
     {
     }
 
-    public class UpdateSpeed
+    public class PlayerLanded : Signal
     {
     }
 
-    public class SpeedUpdated
+    public class UpdateSpeed : Signal
+    {
+    }
+
+    public class StartMoving : Signal
+    {
+    }
+
+    public class SpeedUpdated : Signal
     {
         public float NewSpeed { get; set; }
     }
 
-    public class UpdateScore
+    public class UpdateScore : Signal
     {
         public int Score { get; set; }
     }
 
-    public class SpawnTile
+    public class SpawnTile : Signal
     {
         public TileView LastTile { get; set; }
     }

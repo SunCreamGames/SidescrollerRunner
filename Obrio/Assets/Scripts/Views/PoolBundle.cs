@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Signals;
 using UnityEngine;
 using Zenject;
 
@@ -10,6 +11,9 @@ namespace Views
 
         [Inject]
         private DiContainer _container;
+
+        [Inject]
+        private SignalBus _signalBus;
 
         [SerializeField]
         private List<View> _poolingPrefabs;
@@ -34,6 +38,12 @@ namespace Views
                 pool.Init(prefab, size, new Vector3(0, 50f, 0f), _container);
                 _pools[prefab.name] = pool.GetComponent<Pool>();
             }
+
+            _signalBus.Subscribe<PickUpCoin>(signal =>
+            {
+                signal.Coin.transform.SetParent(null);
+                ReturnObject("Coin", signal.Coin);
+            });
         }
 
         public View GetObject(string tag)

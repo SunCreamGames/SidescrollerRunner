@@ -11,16 +11,20 @@ public class MainInstaller : MonoInstaller
         // Container.Bind<SignalBus>().AsSingle();
         DeclareSignals();
 
+        Container.Bind<Player>().AsSingle();
         Container.Bind<ILevelCreator>().To<RandomLevelCreator>().AsSingle();
         Container.Bind<IGameSpeedController>().To<GameSpeedController>().AsSingle();
     }
 
+
     private void DeclareSignals()
     {
         Container.DeclareSignal<CollisionWithObstacle>();
+        Container.DeclareSignal<StartMoving>();
         Container.DeclareSignal<PickUpCoin>();
         Container.DeclareSignal<LevelFailing>();
         Container.DeclareSignal<LevelStarting>();
+        Container.DeclareSignal<LevelRestarting>();
         Container.DeclareSignal<PlayerJump>();
         Container.DeclareSignal<PlayerTryJump>();
         Container.DeclareSignal<PlayerLanded>();

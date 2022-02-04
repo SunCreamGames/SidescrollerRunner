@@ -13,6 +13,8 @@ namespace Views
 
         private SignalBus _signalBus;
 
+        [SerializeField]
+        private float force = 50f;
 
         [Inject]
         public void Init(SignalBus signalBus)
@@ -24,7 +26,7 @@ namespace Views
 
         private void Jump()
         {
-            rb.AddForce(Vector2.up, ForceMode2D.Impulse);
+            rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
             PauseAnimation();
         }
 
@@ -36,19 +38,23 @@ namespace Views
         }
 
 
-        private void OnCollisionEnter(Collision other)
+        private void OnTriggerEnter2D(Collider2D other)
         {
-            var coin = other.collider.GetComponent<CoinView>();
+            var coin = other.GetComponent<CoinView>();
             if (coin != null)
             {
-                _signalBus.Fire<PickUpCoin>();
-                return;
+                _signalBus.Fire(new PickUpCoin {Coin = coin});
             }
+        }
 
+
+        private void OnCollisionEnter2D(Collision2D other)
+        {
             var ground = other.collider.GetComponent<GroundView>();
             if (ground != null)
             {
-                _signalBus.Fire<CollisionWithObstacle>();
+                // _signalBus.Fire<CollisionWithObstacle>();
+                _signalBus.Fire<PlayerLanded>();
                 return;
             }
 
@@ -56,10 +62,7 @@ namespace Views
             if (obstacle != null)
             {
                 _signalBus.Fire<CollisionWithObstacle>();
-                return;
             }
-
-            _signalBus.Fire<PlayerLanded>();
         }
 
         private void PauseAnimation()

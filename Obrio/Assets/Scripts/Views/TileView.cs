@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Logic;
 using Signals;
 using UnityEngine.PlayerLoop;
@@ -34,7 +35,9 @@ namespace Views
         [SerializeField]
         private bool _isLastTileOnMap;
 
+        [SerializeField]
         private PoolBundle _poolBundle;
+
         private List<PlatformView> _obstacles;
         private List<CoinView> _coins;
         private GroundView _ground;
@@ -61,7 +64,6 @@ namespace Views
             _coins = new List<CoinView>();
 
             SignalBus.Subscribe<SpeedUpdated>(s => UpdateSpeed(s.NewSpeed));
-            SignalBus.Subscribe<LevelFailing>(() => UpdateSpeed(0));
         }
 
 
@@ -73,7 +75,6 @@ namespace Views
         public void StartMove()
         {
             rb.velocity = new Vector2(-GameSpeedController.Speed, 0f);
-            Debug.Log($"<color=red> {rb.velocity} </color>");
         }
 
         void Update()
@@ -84,7 +85,7 @@ namespace Views
 
         private void TrySpawnNewTile()
         {
-            if (_isLastTileOnMap && transform.position.x < 200f && transform.position.y < 25f)
+            if (_isLastTileOnMap && transform.position.x < 100f && transform.position.y < 25f)
             {
                 _isLastTileOnMap = false;
                 SignalBus.Fire(new SpawnTile {LastTile = this});
@@ -93,7 +94,7 @@ namespace Views
 
         private void TryDecompose()
         {
-            if (transform.position.x < -150f)
+            if (transform.position.x < -50f)
             {
                 Decompose();
             }
@@ -101,6 +102,10 @@ namespace Views
 
         public void Compose(Tile tile, PoolBundle poolBundle)
         {
+            SignalBus.Subscribe<StartMoving>(StartMove);
+            SignalBus.Subscribe<LevelRestarting>(Decompose);
+
+            Debug.Log($"<color=cyan> Compose </color>");
             _poolBundle = poolBundle;
             _isLastTileOnMap = true;
             _coins = new List<CoinView>();
@@ -111,8 +116,8 @@ namespace Views
                 if (tile.Coins[i])
                 {
                     var coin = _poolBundle.GetObject("Coin");
-                    coin.transform.SetParent(transform);
-                    coin.transform.position = _coinsSlots[i].position;
+                    coin.transform.SetParent(_coinsSlots[i]);
+                    coin.transform.localPosition = Vector3.zero;
                     _coins.Add((CoinView) coin);
                 }
             }
@@ -122,20 +127,21 @@ namespace Views
                 if (tile.Obstacles[i])
                 {
                     var platform = _poolBundle.GetObject("Platform");
-                    var t = platform.transform;
-                    t.SetParent(transform);
-                    t.position = _obtacleSlots[i].position;
+                    platform.transform.SetParent(_obtacleSlots[i]);
+                    platform.transform.localPosition = Vector3.zero;
+
                     _obstacles.Add((PlatformView) platform);
                 }
             }
 
             TrySpawnNewTile();
-            SignalBus.Subscribe<LevelStarting>(StartMove);
-            // StartMove();
+            StartMove();
         }
 
         private void Decompose()
         {
+            Debug.Log($"<color=red> Decompose </color>");
+            Debug.Log($"Decomposing tile with {transform.position} ");
             rb.velocity = Vector2.zero;
             foreach (var coin in _coins)
             {
@@ -150,6 +156,8 @@ namespace Views
             }
 
             _poolBundle.ReturnObject("Tile", this);
+            SignalBus.Unsubscribe<StartMoving>(StartMove);
+            SignalBus.Unsubscribe<LevelRestarting>(Decompose);
         }
 
         public void SetIsLastTile(bool b)
