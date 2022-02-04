@@ -42,11 +42,9 @@ public class Flow : MonoBehaviour
             if (_gameState == GameState.GameIsOver)
             {
                 _signalBus.Fire<LevelRestarting>();
-                Debug.Log($"<color=red> Here </color>");
             }
             else if (_gameState == GameState.GameNotStarted)
             {
-                Debug.Log($"<color=cyan> Here </color>");
                 _signalBus.Fire<LevelStarting>();
             }
         }
