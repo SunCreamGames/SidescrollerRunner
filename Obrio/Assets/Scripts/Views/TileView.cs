@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Logic;
 using Signals;
+using Unity.Profiling;
 using UnityEngine.PlayerLoop;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
@@ -41,6 +42,7 @@ namespace Views
         private List<Platform> _obstacles;
         private List<Coin> _coins;
         private Ground _ground;
+        List<GameObject> _decorations;
 
         private float _speed;
 
@@ -49,7 +51,7 @@ namespace Views
         {
             _speed = 0f;
             _isLastTileOnMap = false;
-
+            _decorations = new List<GameObject>();
             _obstacles = new List<Platform>();
             _coins = new List<Coin>();
 
@@ -136,6 +138,28 @@ namespace Views
                 }
             }
 
+            var a = new System.Random();
+            var decorationsCount = a.Next(5);
+            for (int i = 0; i < decorationsCount; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    var bushe = _poolBundle.GetObject($"Bushe_{i / 2}");
+                    bushe.transform.parent = transform;
+                    bushe.transform.localPosition = new Vector3(Random.Range(-15f, 15f), -3.35f, 0f);
+
+                    _decorations.Add(bushe);
+                }
+
+                else
+                {
+                    var tree = _poolBundle.GetObject($"Tree_{i / 2}");
+                    tree.transform.parent = transform;
+                    tree.transform.localPosition = new Vector3(Random.Range(-15f, 15f), 0f, 0f);
+                    _decorations.Add(tree);
+                }
+            }
+
             TrySpawnNewTile();
             StartMove();
         }
@@ -143,16 +167,29 @@ namespace Views
         private void Decompose()
         {
             rb.velocity = Vector2.zero;
-            foreach (var coin in _coins)
+            while (_coins.Count > 0)
             {
+                var coin = _coins[0];
+
                 coin.transform.SetParent(null);
                 _poolBundle.ReturnObject("Coin", coin.gameObject);
+                _coins.Remove(coin);
             }
 
-            foreach (var platform in _obstacles)
+            while (_obstacles.Count > 0)
             {
+                var platform = _obstacles[0];
                 platform.transform.SetParent(null);
                 _poolBundle.ReturnObject("Platform", platform.gameObject);
+                _obstacles.Remove(platform);
+            }
+
+            while (_decorations.Count > 0)
+            {
+                var decoration = _decorations[0];
+                _poolBundle.ReturnObject(decoration.name, decoration);
+                decoration.transform.SetParent(null);
+                _decorations.Remove(decoration);
             }
 
             _poolBundle.ReturnObject("Tile", gameObject);

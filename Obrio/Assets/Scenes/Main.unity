@@ -421,7 +421,7 @@ MonoBehaviour:
   - {fileID: 4857646323700555018, guid: 9220768d63058ff4ea897a4a86222908, type: 3}
   - {fileID: 9129593392171513995, guid: 52e0e1f46df5d454fb97bc4a047dd7d4, type: 3}
   - {fileID: 7017642588576239406, guid: af8145c8384c13943bdd0b620c7da35d, type: 3}
-  _sizes: 0a0000000a0000000a0000000700000007000000070000003200000032000000190000000500000005000000
+  _sizes: 3200000032000000320000003200000032000000320000003200000032000000140000003200000032000000
   _poolPrefab: {fileID: 1308864627113855867, guid: 77f5f67112c5c024e8e17ddac883dc5a, type: 3}
 --- !u!4 &961387996
 Transform:
@@ -835,6 +835,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1717522793}
   - component: {fileID: 1717522792}
+  - component: {fileID: 1717522794}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -869,6 +870,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1717522794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717522791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98b7f890acd8a06409c249e31a73d008, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pools: {fileID: 961387995}
 --- !u!1 &1863680456
 GameObject:
   m_ObjectHideFlags: 0

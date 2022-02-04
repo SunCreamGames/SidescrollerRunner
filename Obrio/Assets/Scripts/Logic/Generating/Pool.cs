@@ -35,6 +35,7 @@ namespace Views
             for (int i = 0; i < _size; i++)
             {
                 var a = Instantiate(_prefab);
+                a.name = _prefab.name;
                 container.InjectGameObject(a.gameObject);
                 a.transform.position = _poolRoot;
                 a.gameObject.SetActive(true);
